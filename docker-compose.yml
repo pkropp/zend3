@@ -1,0 +1,51 @@
+version: "2"
+
+services:
+  php-apache:
+    build:
+      context: .docker/php-apache
+    volumes:
+      - zf3-sync:/var/www/html:nocopy,delegated
+    depends_on:
+      - mysql
+    ports:
+      - "80:80"
+      - "443:443"
+  mysql:
+    image: mysql:5.6
+    volumes:
+      - zf3-mysqldata:/var/lib/mysql
+      #- ./dump:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_SERVERNAME: mysql
+      MYSQL_DATABASE: zf3
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: zf3
+      MYSQL_PASSWORD: zf3
+      # one must be defined (setting root password prevents database importing)
+      # MYSQL_ROOT_PASSWORD, MYSQL_ALLOW_EMPTY_PASSWORD and MYSQL_RANDOM_ROOT_PASSWORD
+
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=mysql
+
+  mailhog:
+    build: ./.docker/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  zf3-mysqldata:
+    driver: local
+  zf3-sync:
+    external: true

@@ -1,0 +1,16 @@
+version: "2"
+
+options:
+  verbose: true
+  # compose-file-path: 'docker-compose.yaml'
+  # unison_image: 'eugenmayer/unison:2.51.2.1'
+  # cli_mode: 'auto'
+  # max_attempt: 3000
+
+syncs:
+  zf3-sync:
+    notify_terminal: true
+    src: './zf3/'
+    #sync_strategy: 'unison'
+    #sync_userid: '666'
+    #max_attempt: 10

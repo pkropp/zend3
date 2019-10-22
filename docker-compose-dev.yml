@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+  php-apache:
+    volumes:
+      - zf3-sync:/var/www/html:nocopy # nocopy is important
+
+# that the important thing
+volumes:
+  zf3-sync:
+    external: true
